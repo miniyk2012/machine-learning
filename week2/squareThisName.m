@@ -1,0 +1,1 @@
+function y=squareThisName(x)  y = x^2;
