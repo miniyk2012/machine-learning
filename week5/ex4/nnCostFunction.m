@@ -62,18 +62,48 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+a1 = [ones(m,1), X];
+z2 = a1 * Theta1';
+a2 = [ones(m,1), sigmoid(z2)];
+z3 = a2 * Theta2';
+h = sigmoid(z3);
+
+y_vector = [1:num_labels]==y;   % 这是一个很好的技巧！第10个输出认为是数字0的概率，y_vector其实是一个矩阵，m*num_labels
+% 下面的技巧更易懂
+% eye_matrix = eye(num_labels)
+% y_vector = eye_matrix(y,:)
+
+
+for k=1:num_labels
+  hk = h(:, k);
+  yk = y_vector(:, k);
+  J = J + 1/m * (-yk'*log(hk)-(1-yk')*log(1-hk));
+end
+
+
+% regularized
+pure_Theta1 = Theta1(:, 2:end);
+pure_Theta2 = Theta2(:, 2:end);
+pure_nn_params = [pure_Theta1(:); pure_Theta2(:)];
+J = J + lambda/2/m*sum(pure_nn_params .* pure_nn_params);
 
 
 
+% backpropagation
+for t=1:m
+  z2_t = (z2(t, :))';
+  delta3_t = (h(t, :) - y_vector(t, :))';
+  delta2_t = Theta2' * delta3_t .* sigmoidGradient([1;z2_t]);   % 第一项为几都没关系，因为下面一行会把第一项给去掉
+  delta2_t = delta2_t(2:end);
+  Theta2_grad = Theta2_grad + delta3_t * a2(t, :);
+  Theta1_grad = Theta1_grad + delta2_t * a1(t, :);
+end
 
 
-
-
-
-
-
-
-
+reg_Theta1 = [zeros(size(Theta1, 1), 1), Theta1(:, 2:end)];
+reg_Theta2 = [zeros(size(Theta2, 1), 1), Theta2(:, 2:end)];
+Theta2_grad = Theta2_grad/m + lambda * reg_Theta2/m;
+Theta1_grad = Theta1_grad/m + lambda * reg_Theta1/m;
 
 
 
