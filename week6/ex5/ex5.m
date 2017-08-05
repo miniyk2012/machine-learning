@@ -218,3 +218,47 @@ end
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
+
+%% =========== Part 9 adjusting the regularization parameter =============
+close all;
+figure(1);
+lambda = 1;
+[theta] = trainLinearReg(X_poly, y, lambda);
+plot(X, y, 'rx', 'MarkerSize', 10, 'LineWidth', 1.5);
+plotFit(min(X), max(X), mu, sigma, theta, p);
+xlabel('Change in water level (x)');
+ylabel('Water flowing out of the dam (y)');
+title (sprintf('Polynomial Regression Fit (lambda = %f)', lambda));
+figure(2);
+[error_train, error_val] = ...
+    learningCurve(X_poly, y, X_poly_val, yval, lambda);
+plot(1:m, error_train, 1:m, error_val);
+title(sprintf('Polynomial Regression Learning Curve (lambda = %f)', lambda));
+xlabel('Number of training examples')
+ylabel('Error')
+axis([0 13 0 100])
+legend('Train', 'Cross Validation')
+
+figure(3);
+lambda = 10;
+[theta] = trainLinearReg(X_poly, y, lambda);
+plot(X, y, 'rx', 'MarkerSize', 10, 'LineWidth', 1.5);
+plotFit(min(X), max(X), mu, sigma, theta, p);
+xlabel('Change in water level (x)');
+ylabel('Water flowing out of the dam (y)');
+title (sprintf('Polynomial Regression Fit (lambda = %f)', lambda));
+figure(4);
+[error_train, error_val] = ...
+    learningCurve(X_poly, y, X_poly_val, yval, lambda);
+plot(1:m, error_train, 1:m, error_val);
+title(sprintf('Polynomial Regression Learning Curve (lambda = %f)', lambda));
+xlabel('Number of training examples')
+ylabel('Error')
+axis([0 13 0 100])
+legend('Train', 'Cross Validation')
+
+%% =========== Part 10 compute test set error =============
+lambda = 3;
+theta = trainLinearReg(X_poly, y, lambda);
+test_error = linearRegCostFunction(X_poly_test, ytest, theta, 0);
+sprintf('test error is %f (when lambda=%f)', test_error, lambda)
