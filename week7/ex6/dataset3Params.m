@@ -23,12 +23,21 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
-
-
-
-
-
-
+min_error = realmax;
+steps = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
+for C_i = steps
+    for sigma_j = steps
+        model= svmTrain(X, y, C_i, @(x1, x2) gaussianKernel(x1, x2, sigma_j));
+        predictions = svmPredict(model, Xval);
+        current_error = mean(double(predictions ~= yval));
+        if (current_error < min_error)
+            min_error = current_error;
+            C = C_i;
+            sigma = sigma_j;
+        end
+        fprintf('%f, %f, %f', current_error, C_i, sigma_j);
+    end
+end
 % =========================================================================
 
 end
