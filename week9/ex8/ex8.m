@@ -52,7 +52,7 @@ pause
 %  terms of that distribution.
 %
 fprintf('Visualizing Gaussian fit.\n\n');
-
+% 使用training set来得到model
 %  Estimate my and sigma2
 [mu sigma2] = estimateGaussian(X);
 
@@ -72,7 +72,7 @@ pause;
 %  Now you will find a good epsilon threshold using a cross-validation set
 %  probabilities given the estimated Gaussian distribution
 % 
-
+% 使用cv集来确定epsilon
 pval = multivariateGaussian(Xval, mu, sigma2);
 
 [epsilon F1] = selectThreshold(yval, pval);
@@ -103,13 +103,13 @@ pause;
 load('ex8data2.mat');
 
 %  Apply the same steps to the larger dataset
-[mu sigma2] = estimateGaussian(X);
+[mu sigma2] = estimateGaussian(X);  % X是1000*11的矩阵
 
 %  Training set 
 p = multivariateGaussian(X, mu, sigma2);
 
 %  Cross-validation set
-pval = multivariateGaussian(Xval, mu, sigma2);
+pval = multivariateGaussian(Xval, mu, sigma2);  % Xval是100*11的矩阵, yval为100*1
 
 %  Find the best threshold
 [epsilon F1] = selectThreshold(yval, pval);
