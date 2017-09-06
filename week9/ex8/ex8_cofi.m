@@ -23,8 +23,7 @@ fprintf('Loading movie ratings dataset.\n\n');
 
 %  Load data
 load ('ex8_movies.mat');
-% R        1682x943 
-% Y        1682x943
+
 %  Y is a 1682x943 matrix, containing ratings (1-5) of 1682 movies on 
 %  943 users
 %
@@ -174,6 +173,7 @@ load('ex8_movies.mat');
 %  R is a 1682x943 matrix, where R(i,j) = 1 if and only if user j gave a
 %  rating to movie i
 
+% 看来加入一个人的喜好，就得把整个数据训练一遍，这个效率也太差了
 %  Add our own ratings to the data matrix
 Y = [my_ratings Y];
 R = [(my_ratings ~= 0) R];
@@ -225,7 +225,7 @@ movieList = loadMovieList();
 fprintf('\nTop recommendations for you:\n');
 for i=1:10
     j = ix(i);
-    fprintf('Predicting rating %.1f for movie %s\n', my_predictions(j), ...
+    fprintf('Predicting rating %.10f for movie %s\n', my_predictions(j), ...
             movieList{j});
 end
 
