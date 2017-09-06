@@ -30,16 +30,6 @@ for epsilon = min(pval):stepsize:max(pval)
     recall = tp / (tp + fn);
     F1 = 2 * prec * recall / (prec + recall);
 
-
-
-
-
-
-
-
-
-
-
     % =============================================================
 
     if F1 > bestF1
